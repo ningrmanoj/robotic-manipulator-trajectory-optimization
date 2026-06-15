@@ -2,77 +2,89 @@
 
 ## Overview
 
-This project focuses on trajectory planning and dynamic analysis of a 2R (two-link) robotic manipulator using MATLAB.
+This project presents a MATLAB-based framework for trajectory planning, inverse dynamics analysis, and time-optimal trajectory optimization of a 2R robotic manipulator.
 
-The goal is to generate smooth joint trajectories, calculate the torques required to execute those motions, and optimize the motion time while ensuring that the actuator torque limits are not exceeded.
+The objective is to generate smooth joint trajectories between specified start and end configurations while minimizing execution time and ensuring that actuator torque limits are not violated.
+
+The project combines trajectory generation, dynamic modeling, and nonlinear optimization to produce feasible and efficient robotic motion.
 
 ---
 
 ## Project Workflow
 
-The project is divided into three main stages:
-
-### 1. Trajectory Generation
+### Step 1: Trajectory Generation
 
 **File:** `zvector_trajectorycomputer.m`
 
-* Generates a smooth joint-space trajectory between a start and end position.
-* Uses cubic spline interpolation.
-* Computes:
+A cubic spline trajectory is generated between the initial and final joint configurations. The trajectory provides continuous position, velocity, and acceleration profiles for both joints.
 
-  * Joint Position
-  * Joint Velocity
-  * Joint Acceleration
-* Visualizes the generated motion profiles.
-
-### 2. Inverse Dynamics Torque Calculation
+### Step 2: Inverse Dynamics Analysis
 
 **File:** `instant_torque_computer_galmani.m`
 
-* Computes the torque required at each robot joint for a given motion state.
+The manipulator dynamic model is used to compute the torques required at each joint.
 
-* Uses the dynamic model of the 2R manipulator:
+The model considers:
 
-  τ = M(q)q̈ + C(q,q̇)q̇ + G(q)
+* Link inertia
+* Coriolis and centrifugal effects
+* Gravitational loading
 
-* Considers:
+This allows evaluation of whether a planned motion can be executed by the actuators.
 
-  * Inertia effects
-  * Coriolis and centrifugal effects
-  * Gravity effects
-
-### 3. Time-Optimal Trajectory Optimization
+### Step 3: Time-Optimal Trajectory Optimization
 
 **File:** `normalized_fminoptimization3.m`
 
-* Optimizes the trajectory execution time.
-* Enforces actuator torque limits during optimization.
-* Uses Sequential Least Squares Programming (SLSQP).
-* Produces:
+The trajectory is optimized using Sequential Least Squares Programming (SLSQP) to minimize execution time while satisfying joint torque constraints.
 
-  * Optimized trajectory
-  * Joint torque profiles
-  * Position, velocity, and acceleration plots
+The optimization searches for suitable internal trajectory points and final execution time that result in the fastest feasible motion.
 
 ---
 
-## Tools Used
+## Results
+
+### Joint Motion Profiles
+
+The optimized trajectory produces smooth position, velocity, and acceleration profiles for both joints throughout the motion.
+
+![Joint Motion Profiles](results/motion_profiles.png)
+
+### Joint Torque Profiles
+
+The computed torque profiles remain within the specified actuator limits while executing the optimized trajectory.
+
+![Joint Torque Profiles](results/torque_profiles.png)
+
+---
+
+## Key Features
+
+* Cubic spline trajectory generation
+* Inverse dynamics torque computation
+* Torque-constrained optimization
+* Time-optimal motion planning
+* MATLAB-based simulation and visualization
+
+---
+
+## Tools and Methods
 
 * MATLAB
 * Optimization Toolbox
 * Cubic Spline Interpolation
 * Sequential Least Squares Programming (SLSQP)
+* Robot Dynamics Modeling
 
 ---
 
-## Key Concepts
+## My Contributions
 
-* Robot Dynamics
-* Inverse Dynamics
-* Trajectory Planning
-* Motion Optimization
-* Torque-Constrained Control
-* Robotic Manipulators
+* Developed trajectory generation algorithms for a 2R robotic manipulator
+* Implemented inverse dynamics calculations for torque estimation
+* Formulated and solved a time-optimal trajectory optimization problem
+* Generated and analyzed motion and torque profiles
+* Validated actuator torque constraints through simulation
 
 ---
 
@@ -80,12 +92,3 @@ The project is divided into three main stages:
 
 * Team Size: 2 Members
 * Project Type: Academic Robotics Project
-
----
-
-## Future Improvements
-
-* Obstacle avoidance
-* Multi-link robotic manipulators
-* Real-time trajectory tracking
-* Hardware implementation on physical robotic systems
